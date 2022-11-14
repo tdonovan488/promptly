@@ -1,6 +1,6 @@
 import requests,json,time
 from threading import Thread
-from datetime import datetime
+from datetime import datetime,timedelta
 
 from flask import Flask
 from flask_cors import CORS
@@ -11,7 +11,6 @@ CORS(app)
 
 with open("prompts.txt","r") as f:
     prompts = json.loads(f.read())
-# styles = ["Spectral","Bad Trip","Cartoonist","HDR","Realistic","Meme","Isometric","Retro-Futurism","Analogue","Paint","Polygon","Gouache","Comic","Line-Art","Malevolent","Surreal","Throwback","Street Art","No Style","Ghibli","Melancholic","Pandora","Daydream","Provenance","Arcane","Toasty","Transitory","Psychic","Rose Gold","Wuhtercuhler","Etching","Mystical","Dark Fantasy","HD","Vibrant","Fantasy Art","Steampunk","Psychedelic","Ukiyoe","Synthwave"]
 
 todays_prompt_data = {}
 
@@ -103,6 +102,7 @@ def main_loop():
     print("Loop Started")
     date = datetime.now()
     date_string = date.strftime("%d-%m-%Y")
+    tomorrow_string = (date+timedelta(days=1)).strftime("%d-%m-%Y")
 
     global todays_prompt_data
     todays_prompt_data = prompts[date_string]
@@ -113,6 +113,9 @@ def main_loop():
     if(todays_prompt_data["link"] == ""):
         imageGenerator = generateImage(prompt=prompt,style=style)
         todays_prompt_data["link"] = imageGenerator.result["final"]
+    #if(prompts[tomorrow_string]["link"] == ""):
+    #    imageGenerator = generateImage(prompt=prompts[tomorrow_string]["prompt"],style=prompts[tomorrow_string]["style"])
+
 
     time.sleep(60)
 
