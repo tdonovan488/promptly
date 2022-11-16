@@ -24,7 +24,7 @@ header{
     align-items: center;
 }
 .dropdown-menu {
-    display: block; /* set to none */
+    display: none; /* set to none */
     position: absolute;
     background-color: #bdaa3d;
     min-width: 120px;
@@ -132,6 +132,10 @@ header{
     width: 40px;
     height: 40px;
 }
+[class*="prompt-image"]{
+    height: 250px;
+    width: auto;
+}
 
 @media only screen and (min-width:600px){
     /* Desktop */
@@ -140,6 +144,10 @@ header{
         font-size: 26px;
         width: 75px;
         height: 75px;
+    }
+    .prompt-image{
+        height: 500px;
+        width: auto;
     }
 }
 .correct{

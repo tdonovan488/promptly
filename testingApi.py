@@ -17,7 +17,7 @@ prompt_data = {
             "f",
             "i"
         ],
-        "link": "https://images.wombo.art/exports/4f26613b-7704-4a98-8ec4-83f9dc472e33/blank_tradingcard.jpg?Expires=1675744959&Signature=ryUCtdx2UZ3uBD0fS~lb3HLurRDDC7OS1bv0Ac8ztLEe5JWwj6bJ9Yzvz6aQFwiQzuAPpSC3IPg~o~CfV-XzSYOy0cJS0cdOcq09ejnNs5BTmtB6PPn4PScvHv4CQxo1MC21ZFYfULkutXcYn8c4JXZLAuhA7iLzvUsCNeHCRSMmSHS59qHwxI~2s8iVonslDbskHYEJeeTOlK-ZA4GAl5pydaj0zG-KSCrArg3WGqFV2pwfN~2wFZhtqSnf6kSC5tCPOqLJboGlQtoqbP-6J9Bzd1iwUJrdkNcVtcIkeyMGSzFKvIAlfi~d0M~D0jrEoB4MS9nQsGH6lOsWT~9R0g__&Key-Pair-Id=K1ZXCNMC55M2IL"
+        "link": "https://luan-wombo-paint.s3.amazonaws.com/generated/930dc429-4765-4d91-83be-2d8ec193e9f5/final.jpg?AWSAccessKeyId=AKIAWGXQXQ6WCOB7PP5J&Signature=B%2BP1rCZdCX%2BK34XH09uhlUlW%2BfY%3D&Expires=1668570164"
     }
 
 @app.route("/api/todaysPrompt")
