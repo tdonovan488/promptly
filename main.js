@@ -49,6 +49,10 @@ async function getPrompt(){
     return response.json()
 }
 
+document.querySelector("#Capa_1").addEventListener("click",function(){
+    console.log("clicked")
+})
+
 document.addEventListener("keydown",function(e){
     if(e.key === "Backspace" || e.key === "Delete"){
         if(correctLetters[guessIndex-1] || shownHints[guessIndex-1]){
