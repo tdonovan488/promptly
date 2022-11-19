@@ -28,28 +28,46 @@ footer {
 
 header{
     background-color: #222831;
-    box-shadow: 5px 5px 5px rgb(24, 24, 24);
+    box-shadow: 0px 5px 5px rgb(24, 24, 24);
     float: bottom;
     display:block;
     margin-right: 0px;
     width: 100%;
     height:75px;
 }
+.exit-container{
+    width: 100%;
+    max-height: 25px;
+    display: flex;
+    justify-content: right;
+    margin-top: 5px;
+}
+.exit-button{
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin-right: 5px;
+    padding: 0px 0px 0px 0px;
+}
+.example-image-container{
+    display: flex;
+    justify-content: center;
+}
 .menus{
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
 }
-.menu-hidden{
+/* .menu-hidden{
     display: none;
-}
+} */
 .how-to-play,.stats,.credits,.settings{
     position: absolute;
-    width: 600px;
-    height: 600px;
     border-radius: 10px;
     background-color: #222831;
 }
@@ -61,7 +79,35 @@ header{
     display: flex;
     align-items: center;
 }
-
+h1{
+    width: 100%;
+    text-align: center;
+    font-family: hand-drawn;
+    color:#F2E7D5;
+}
+.instructions-text{
+    width: 100%;
+    text-align: center;
+}
+.example-box{
+    margin-bottom: 5px;
+    border-radius: 5px;
+    border-color: black;
+    border-width: 3px;
+    border-style: solid;
+}
+.letterbox-instructions{
+    display: grid;
+    justify-items: center;
+    text-align: center;
+}
+.how-to-grid{
+    color: #F2E7D5;
+    font-family: Arial, Helvetica, sans-serif;
+    display: grid;
+    margin-left: 25px;
+    margin-right: 25px;
+}
 .dropdown-menu {
     display: none; /* set to none */
     position: absolute;
@@ -77,6 +123,7 @@ header{
 }
 .dropdown-text{
     font-family: hand-drawn;
+    color: #F2E7D5;
     font-size: 10px;
 }
 .dropdown-menu button {
@@ -104,7 +151,6 @@ header{
 
 .dropdown-button:hover{
     cursor: pointer;
-    background-color: aqua;
 }
 .logo-container{
     height: 100%;
@@ -199,9 +245,32 @@ header{
     height: 250px;
     width: auto;
 }
+[class*="example-image"]{
+    height: 150px;
+    width: auto;
+}
 [class*="footer"]{
     font-size: 8px;
 }
+[class*="popup"]{
+    width: 300px;
+    height: 450px;
+}
+[class*="how-to-title"]{
+    font-size: 12px;
+}
+[class*="example-box"]{
+    border-width: 2px;
+    width: 25px;
+    height: 25px;
+}
+[class*="body-text"]{
+    font-size: 8px;
+}
+[class*="how-to-grid"]{
+    row-gap: 5px;
+}
+
 @media only screen and (min-width:600px){
     /* Desktop */
     .letter-box{
@@ -214,8 +283,33 @@ header{
         height: 500px;
         width: auto;
     }
+    .example-image{
+        height: 300px;
+        width: auto;
+    }
+    .example-image-container{
+        height: 300px;
+    }
     .footer{
         font-size: 16px;
+    }
+    .popup{
+        width: 600px;
+        height: 750px;
+    }
+    .how-to-title{
+        font-size: 24px;
+    }
+    .example-box{
+        border-width: 3px;
+        height: 50px;
+        width: 50px;
+    }
+    .body-text{
+        font-size: 16px;
+    }
+    .how-to-grid{
+        row-gap: 10px;
     }
 }
 .correct{

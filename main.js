@@ -1,11 +1,5 @@
 var prompt = "dutiful evening"
-var hints = [
-    "n",
-    "e",
-    "l",
-    "d",
-    "g"
-]
+var hints = []
 var images = []
 
 var guessedWord = false
@@ -21,6 +15,11 @@ var correctLetters = {"Positions":[]}
 var shownHints = {"Positions":[]}
 var promptContainer = document.querySelector("body > div.grid-aligner > div")
 var letterBoxes = []
+
+var exitButtons = document.getElementsByClassName("exit-button")
+var overlayContainer = document.querySelector("body > div.menus.menu-hidden")
+var howToPopup = document.querySelector("body > div.menus.menu-hidden > div")
+
 
 getPrompt().then((data) => {
     console.log(data)
@@ -50,6 +49,14 @@ async function getPrompt(){
     return response.json()
 }
 
+function closePopup(){
+    howToPopup.className = "how-to-play popup menu-hidden"
+    overlayContainer.className = "menus menu-hidden"
+}
+for(var i = 0;i < exitButtons.length;i++){
+    exitButtons[i].addEventListener("click",closePopup)
+}
+
 document.querySelector("body > div.image-container > button:nth-child(1)").addEventListener("click",function(){
     if(imageIndex > 0){
         imageIndex--
@@ -70,8 +77,8 @@ document.querySelector("body > div.image-container > button:nth-child(3)").addEv
 })
 
 document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(1)").addEventListener("click",function(){
-    document.querySelector("body > div.menus.menu-hidden").className = "menus"
-    document.querySelector("body > div.menus > div").className = "how-to-play-container"
+    howToPopup.className = "how-to-play popup"
+    overlayContainer.className = "menus"
 })
 
 
@@ -81,10 +88,6 @@ document.querySelector("body > header > div.dropdown-container > div > div > but
 
 
 document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(3)").addEventListener("click",function(){
-    
-})
-
-document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(4)").addEventListener("click",function(){
     
 })
 

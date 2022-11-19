@@ -21,10 +21,6 @@
                         <div class="dropdown-text">Help</div>
                     </button>
                     <button>
-                        <img class="dropdown-image" src="icons/statistics.png" width="30" height="30">
-                        <div class="dropdown-text">Stats</div>
-                    </button>
-                    <button>
                         <img class="dropdown-image" src="icons/settings.png" width="30" height="30">
                         <div class="dropdown-text">Settings</div>
                     </button>
@@ -38,17 +34,32 @@
     </header>
     <body>
         <div class="menus menu-hidden">
-            <div class="how-to-play menu-hidden">
-                <button id="exit-button">X</button>
-            </div>
-            <div class="stats menu-hidden">
-                <button id="exit-button">X</button>
-            </div>
-            <div class="settings menu-hidden">
-                <button id="exit-button">X</button>
-            </div>
-            <div class="credits menu-hidden">
-                <button id="exit-button">X</button>
+            <div class="how-to-play popup menu-hidden">
+                <div class="exit-container">
+                    <button class="exit-button">
+                        <img src="icons/exit.png" width="32px" height="32px">
+                    </button>
+                </div>
+                <h1 class="how-to-title">How To Play</h1>
+                <div class="how-to-grid">
+                    <div class="example-image-container">
+                        <img class="example-image" src="images/example.png" width="300" height="300">
+                    </div>
+                    <div class="instructions-text">
+                        <b class="body-text">You are given five guesses to guess the prompt used for the AI to generate the given images</b>
+                    </div>
+                    <div class="instructions-text">
+                        <b class="body-text">The prompt consists of two words: the first (top) is an adjective, and the second (bottom) is a noun</b>
+                    </div>
+                    <div class="letterbox-instructions">
+                        <div class="example-box hint"></div>
+                        <b class="body-text">This is a hint, it is the correct letter for that space given after an incorrect guess</b>
+                    </div>
+                    <div class="letterbox-instructions">
+                        <div class="example-box correct"></div>
+                        <b class="body-text">This is a correct letter, you must correctly guess a full word from the prompt for this to be displayed</b>
+                    </div>
+                </div>
             </div>
         </div>
             <div class="image-container">
