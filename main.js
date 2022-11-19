@@ -6,13 +6,14 @@ var hints = [
     "d",
     "g"
 ]
-var image = "https://images.wombo.art/generated/d3e2ee2d-0b70-4a31-83a9-ec46312784af/final.jpg?Expires=1675584232&Signature=VDAmXJdLyVrrt1qCx8BiDv9Ec7LsKikSAKnEWn3yy8tf4nwSvBPVApZyK851FBq6~RZlY6iDW~nMN-Uyn9MSeuXbDESaccizCa7kO-oEn9LsrF9gb94jJsJd2VKoh0Y1VI1PgRDUMulU-UYi2mTT~M1P3NkRvhOES3gJtmLupcEwHJgtXlarN9b9cPSzK8gnuQBFvHifmz8nGHs92f83~b7Hs34WqyyVsBtNJwOp~7A5VBO6ftvCIM4K~W0O5ReSToOw-jap3QYR9O0dr0w0i16nEBjt2E1~H2iZ1DNSejJS6m-I6D1p5dRqWyFGRRQEqgSwc~cpNxiLrhRhqqncLQ__&Key-Pair-Id=K1ZXCNMC55M2IL"
+var images = []
 
 var guessedWord = false
 var n = 0
 var compare_string = ""
 var guess = []
 var guessIndex = 0
+var imageIndex = 0
 var selectedSpace = 0
 var guessCount = 5
 var hintIndex = 0
@@ -24,7 +25,7 @@ var letterBoxes = []
 getPrompt().then((data) => {
     console.log(data)
     prompt = data.prompt
-    image = data.link
+    images = data.links
     hints = data.hints
     n = prompt.replace(" ","").length -1
     compare_string = prompt.replace(" ","")
@@ -39,7 +40,7 @@ getPrompt().then((data) => {
         promptContainer.children[child].appendChild(newLetter)
         letterBoxes.push(newLetter)
     }
-    document.querySelector("body > div.image-container > img").src = image
+    document.querySelector("body > div.image-container > img").src = images[0]
 })
 
 async function getPrompt(){
@@ -49,57 +50,62 @@ async function getPrompt(){
     return response.json()
 }
 
-document.querySelector("#Capa_1").addEventListener("click",function(){
-    console.log("clicked")
+document.querySelector("body > div.image-container > button:nth-child(1)").addEventListener("click",function(){
+    if(imageIndex > 0){
+        imageIndex--
+    } else {
+        imageIndex = 2
+    }
+    document.querySelector("body > div.image-text").innerText = (imageIndex + 1) + "/3"
+    document.querySelector("body > div.image-container > img").src = images[imageIndex]
 })
+document.querySelector("body > div.image-container > button:nth-child(3)").addEventListener("click",function(){
+    if(imageIndex < 2){
+        imageIndex++
+    } else{
+        imageIndex = 0
+    }
+    document.querySelector("body > div.image-text").innerText = (imageIndex + 1) + "/3"
+    document.querySelector("body > div.image-container > img").src = images[imageIndex]
+})
+
+document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(1)").addEventListener("click",function(){
+    document.querySelector("body > div.menus.menu-hidden").className = "menus"
+    document.querySelector("body > div.menus > div").className = "how-to-play-container"
+})
+
+document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(2)").addEventListener("click",function(){
+    
+})
+
+
+document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(3)").addEventListener("click",function(){
+    
+})
+
+document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(4)").addEventListener("click",function(){
+    
+})
+
 
 document.addEventListener("keydown",function(e){
     if(e.key === "Backspace" || e.key === "Delete"){
-        if(correctLetters[guessIndex-1] || shownHints[guessIndex-1]){
-            while((correctLetters[guessIndex-1] || shownHints[guessIndex-1]) && (guessIndex != 0)){
-                guessIndex -=1
-                console.log("Subtracted")
-            }
-        } else{
-            if(guessIndex > 0) guessIndex -= 1
-        }
-
-        if((correctLetters[guessIndex] != void 0 || shownHints[guessIndex] != void 0) && guessIndex > 0){
-            guessIndex-=1
-        }
-
-        console.log(guessIndex)
+        guessIndex = findDeleteIndex()
         guess = guess.slice(0,guessIndex)
-        
-        if(!correctLetters[guessIndex] && !shownHints[guessIndex]) selectedSpace = guessIndex
-        if(correctLetters[guessIndex-1] || shownHints[guessIndex-1]){
-            while((correctLetters[guessIndex-1] || shownHints[guessIndex-1]) && (guessIndex != 0)){
-                guessIndex -=1
-                console.log("Subtracted")
-            }
-        }
     } else if (e.key == "Enter"){
         if(guess.length != n + 1 || guess.includes(undefined)) return;
         checkGuess()
     }else if(((e.keyCode >= 97 && e.keyCode <= 122) || (e.keyCode >= 65 && e.keyCode <= 90))){
-        if((correctLetters[guessIndex] || shownHints[guessIndex])){
-            while((correctLetters[guessIndex] || shownHints[guessIndex]) && (guessIndex != n)){
-                guessIndex+=1
-            }
-        }
+        guessIndex = findOpenIndex()
         guess[guessIndex] = e.key
-        if(guessIndex != n+1) guessIndex+=1
-        while((correctLetters[guessIndex] || shownHints[guessIndex]) && (guessIndex != n)){
-            guessIndex+=1
-        }
-        selectedSpace = guessIndex
     }
+    selectedSpace = findOpenIndex()
     guess = guess.slice(0,n+1)
     for(var i = 0;i < correctLetters.Positions.length;i++){
-        guess[correctLetters.Positions[i]] = prompt.replace(" ","")[correctLetters.Positions[i]]
+        guess[correctLetters.Positions[i]] = compare_string[correctLetters.Positions[i]]
     }
     for(var i = 0;i < shownHints.Positions.length;i++){
-        guess[shownHints.Positions[i]] = prompt.replace(" ","")[shownHints.Positions[i]]
+        guess[shownHints.Positions[i]] = compare_string[shownHints.Positions[i]]
     }
 
     updateBoard();
@@ -158,6 +164,23 @@ function giveHint(){
 
 }
 
+function findOpenIndex(){
+    for(var i = 0;i<n + 1;i++){
+        if((!correctLetters[i] && !shownHints[i] && !guess[i])){
+            return i
+        }
+    }
+    return n + 1
+}
+function findDeleteIndex(){
+    for(var i = n;i>0;i--){
+        if((!correctLetters[i] && !shownHints[i] && guess[i])){
+            return i
+        }
+    }
+    return 0
+}
+
 function checkGuess(){
     guessCount--
     if(compare_string == guess.join("")){
@@ -190,13 +213,8 @@ function checkGuess(){
     if(!guessedWord){
         giveHint()
         guess = []
-        for(var i = 0;i<n;i++){
-            console.log()
-            if((!correctLetters[i] && !shownHints[i])){
-                guessIndex = i
-                selectedSpace = i
-                break
-            }
-        }
+        i = findOpenIndex()
+        guessIndex = i
+        selectedSpace = i
     }
 }

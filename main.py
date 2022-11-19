@@ -16,42 +16,34 @@ with open("prompts.txt","r") as f:
 todays_prompt_data = {}
 
 class generateImage(object):
-    def __init__(self,prompt,style):
+    def __init__(self,prompt,styles):
         self.prompt = prompt
-        self.style = style
+        self.style = styles
         self.idToken = f'bearer {API_KEY}'
         self.taskId = ""
         self.state = ""
-        self.result = ""
+        self.results = []
         self.headers = {
             "Authorization": self.idToken,
             "Content-Type": "application/json"
         }
-        # print("Getting Token")
-        # self.getToken()
-        print("Creating Task")
-        self.createTask()
-        print("Inputting Prompt")
-        self.inputPrompt()
-        while self.state != "completed":
-            print("Checking Results")
-            self.checkResult()
-            time.sleep(3)
-        print("Got Result:")
-        print(self.result.get("final"))
-    # def getToken(self):
-    #     r = requests.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDCvp5MTJLUdtBYEKYWXJrlLzu1zuKM6Xw",json={"returnSecureToken":True})
-    #     j = json.loads(r.text)
-    #     self.idToken = "bearer " + j.get("idToken")
 
-    #     # EXAMPLE RESPONSE
-    #     # {
-    #     # "kind": "identitytoolkit#SignupNewUserResponse",
-    #     # "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ3YjE5MTI0MGZjZmYzMDdkYzQ3NTg1OWEyYmUzNzgzZGMxYWY4OWYiLCJ0eXAiOiJKV1QifQ.eyJwcm92aWRlcl9pZCI6ImFub255bW91cyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9wYWludC1wcm9kIiwiYXVkIjoicGFpbnQtcHJvZCIsImF1dGhfdGltZSI6MTY2ODM3Njk2MywidXNlcl9pZCI6InAzYVQ2TTlydklPYUJYdFc1MDA3R0hmamtqcjIiLCJzdWIiOiJwM2FUNk05cnZJT2FCWHRXNTAwN0dIZmpranIyIiwiaWF0IjoxNjY4Mzc2OTYzLCJleHAiOjE2NjgzODA1NjMsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnt9LCJzaWduX2luX3Byb3ZpZGVyIjoiYW5vbnltb3VzIn19.OcdP15XFryy-B9JgZqG0FrBkf8pCT_k1yEO5SucAkn1Oiism27H48YX-hOvuL4CSJPyO5BaD7AZmknZsWCMKjbiuGGxmO_qoIwyRQ4qzAyMxGb9ERolz7eVnjQ3RYzy7BH9Dt93AsekQyjJPQBNyRvzeMLFp6qUDVilrSHeUsvH-nP96ZgUYeXvH6jkCdno38UrXk-JoxCpX6IJYF__tGs7ZVFj1QqkEQuT04Jm-AkmNIE94DxJnSilCaNBsttE2JI5ldyW665xESt0cWmrbcOvgYkPJPjfNh6M_rx4Sy4_NXCZ5qsIMsDvlf_sVLLm1UIB2PngpTaHZ7hmqfssDAQ",
-    #     # "refreshToken": "AOkPPWR-vBWlsbRFjjjMAjWp8NNzy9ull_fZQjgSR6-oFsWx9rGAhGL9jn99riGjPGOM1tGFRKh6dmkE4Oczqmg_eU0Uzy9p9cvX-v7LzSYXUa12uJmcWJpEpkRYuC71GKH_OsqJcdLOkDOm9Zj7Z_HChX8eOAtH8xBYvy_Sftfg5X1x3X7yfUw",
-    #     # "expiresIn": "3600",
-    #     # "localId": "p3aT6M9rvIOaBXtW5007GHfjkjr2"
-    #     # }
+        for style in styles:
+            self.style = style
+            self.state = ""
+            print("Creating Task")
+            self.createTask()
+            print("Inputting Prompt")
+            self.inputPrompt()
+            while self.state != "completed" and self.state != "failed":
+                print("Checking Results")
+                self.checkResult()
+                time.sleep(3)
+            if(self.state == "failed"):
+                self.results = []
+                break
+        if(self.state != "failed"):
+            self.saveImages()
 
     def createTask(self):
         r = requests.post("https://api.luan.tools/api/tasks/",headers=self.headers,json={"use_target_image": False})
@@ -59,30 +51,16 @@ class generateImage(object):
         j = json.loads(r.text)
         self.taskId = j.get("id")
         self.state = j.get("state")
-        
-        # EXAMPLE RESPONSE
-        # {
-        # "id": "59f2f96a-81ab-4129-8fc5-f4793956a9d9",
-        # "user_id": "bEnVHQLf2tbZVhv7OuNUXmWvmaG3",
-        # "input_spec": null,
-        # "state": "input",
-        # "premium": false,
-        # "created_at": "2022-11-13T21:55:06.036526+00:00",
-        # "updated_at": "2022-11-13T21:55:06.036526+00:00",
-        # "generation_error_code": null,
-        # "photo_url_list": [],
-        # "generated_photo_keys": [],
-        # "result": null
-        # }
-
 
     def inputPrompt(self):
         put_payload ={            
             "input_spec": {                    
             "style": self.style,                    
             "prompt": self.prompt,
+            "width":500,
+            "height":500
         }}
-        r = requests.request("PUT", f"https://api.luan.tools/api/tasks/{self.taskId}", headers=self.headers, json=put_payload)
+        r = requests.request("PUT", f"https://api.luan.tools/api/tasks/{self.taskId}", headers=self.headers, data=json.dumps(put_payload))
         j = json.loads(r.text)
         print(r.text)
         self.state = j.get("state")
@@ -92,8 +70,15 @@ class generateImage(object):
         r = requests.get(f"https://api.luan.tools/api/tasks/{self.taskId}",headers=self.headers)
         j = json.loads(r.text)
         self.state = j.get("state")
-        self.result = j.get("result")
+        self.results.append(j.get("result"))
         print(r.text)
+
+    def saveImages(self):
+        filename = self.prompt.replace(" ","-")
+        for i in self.results:
+            r = requests.get("i")
+            with open(f"images/{filename}.jpg","wb") as f:
+                f.write(r.content)
 
 def main_loop():
     print("Loop Started")
@@ -105,27 +90,44 @@ def main_loop():
     todays_prompt_data = prompts[date_string]
 
     prompt = todays_prompt_data["prompt"]
-    style = todays_prompt_data["style"]
+    styles = todays_prompt_data["styles"]
 
-    if(todays_prompt_data["link"] == ""):
-        imageGenerator = generateImage(prompt=prompt,style=style)
-        todays_prompt_data["link"] = imageGenerator.result["final"]
-    #if(prompts[tomorrow_string]["link"] == ""):
-    #    imageGenerator = generateImage(prompt=prompts[tomorrow_string]["prompt"],style=prompts[tomorrow_string]["style"])
+    if(len(todays_prompt_data["links"]) == 0):
+        imageGenerator = generateImage(prompt=prompt,styles=styles)
+        todays_prompt_data["links"] = imageGenerator.result
+        print(todays_prompt_data)
+        prompts[date_string] = todays_prompt_data
+        time.sleep(30)
 
+    # if(len(prompts[tomorrow_string]["links"]) == 0):
+    #     imageGenerator = generateImage(prompt=prompts[tomorrow_string]["prompt"],styles=prompts[tomorrow_string]["styles"])
+    #     prompts[tomorrow_string]["links"] = imageGenerator.result
+    #     time.sleep(30)
+
+    with open("prompts.txt","w") as f:
+        f.write(json.dumps(prompts,indent=4))
 
     time.sleep(60)
 
-#loop = Thread(target=lambda: main_loop(),args=())
-
-#loop.start()
-
-date = datetime.now()
-date_string = date.strftime("%d-%m-%Y")
-generateImage(prompts[date_string]["prompt"],prompts[date_string]["style"])
+# loop = Thread(target=lambda: main_loop(),args=())
+# loop.start()
 
 @app.route("/api/todaysPrompt")
 def getTodaysPrompt():
     return json.dumps(todays_prompt_data,indent=4)
 
-#app.run()
+# app.run()
+
+date = datetime.now()
+date_string = date.strftime("%d-%m-%Y")
+todays_prompt_data = prompts[date_string]
+prompt = todays_prompt_data["prompt"]
+styles = todays_prompt_data["styles"]
+if(len(todays_prompt_data["links"]) == 0):
+    imageGenerator = generateImage(prompt=prompt,styles=styles)
+    todays_prompt_data["links"] = imageGenerator.result
+    print(todays_prompt_data)
+    prompts[date_string] = todays_prompt_data
+
+with open("prompts.txt","w") as f:
+    f.write(json.dumps(prompts,indent=4))

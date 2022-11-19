@@ -68,15 +68,19 @@ for i in range(daysToGenerate):
 
     prompt = random.choice(adjectives) + " " + random.choice(nouns)
 
-    styleName = random.choice(styles)
-    style = styleDecoder[styleName]
+    styleNames = []
+    styleCodes = []
+    for i in range(3):
+        styleName = random.choice(styles)
+        styleNames.append(styleName)
+        styleCodes.append(styleDecoder[styleName])
 
     hints = [*prompt]
     random.shuffle(hints)
     hints.pop(hints.index(" "))
     hints = list(set(hints))
-    print(i,date_string,prompt,style,styleName)
-    prompts[date_string] = {"prompt":prompt,"style":style,"styleName":styleName,"hints":hints,"link":""}
+    print(i,date_string,prompt,styleNames,styleCodes)
+    prompts[date_string] = {"prompt":prompt,"styles":styleCodes,"styleNames":styleNames,"hints":hints,"links":[]}
 
 with open("prompts.txt","w") as f:
     f.write(json.dumps(prompts,indent=4))
