@@ -8,7 +8,7 @@ CORS(app)
 prompt_data = {
         "prompt": "grand cycle",
         "styles": [11],
-        "styleName": "Mystical",
+        "styleNames": ["Mystical"],
         "hints": [
             "n",
             "c",

@@ -14,7 +14,7 @@ body{
 }
 footer {
     font-size: 16px;
-    color: white;
+    color: #F2E7D5;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     display: flex;
     position:absolute;
@@ -112,6 +112,7 @@ header{
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    color: #F2E7D5;
 }
 
 .dropdown-icon{
@@ -132,6 +133,8 @@ header{
     justify-content: center;
 }
 .change-image{
+    font-family: hand-drawn;
+    color: #F2E7D5;
     cursor: pointer;
     margin-left: 10px;
     margin-right: 10px;
@@ -168,14 +171,16 @@ header{
     align-items: center;
     justify-content: center;
     font-family: hand-drawn;
+    color: #F2E7D5;
     font-weight: bold;
     border-radius: 5px;
     border-width: 3px;
 }
 
 .image-text{
-    color: white;
-    font-size: 16px;
+    font-family: hand-drawn;
+    color: #F2E7D5;
+    font-size: 8px;
     width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -221,5 +226,5 @@ header{
     background-color: #FF6464;
 }
 .selected{
-    border-color: rgb(197, 197, 197);
+    border-color:#F2E7D5;
 }

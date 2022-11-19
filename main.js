@@ -74,6 +74,7 @@ document.querySelector("body > header > div.dropdown-container > div > div > but
     document.querySelector("body > div.menus > div").className = "how-to-play-container"
 })
 
+
 document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(2)").addEventListener("click",function(){
     
 })
