@@ -44,7 +44,7 @@ getPrompt().then((data) => {
 
 async function getPrompt(){
     
-    var url = "http://127.0.0.1:5000/api/todaysPrompt"
+    var url = "https://6809-2601-40c-c000-4690-9d9-1183-4914-4dd9.ngrok.io/api/todaysPrompt"
     const response = await fetch(url,{method:"GET",headers: {'Content-Type': 'application/json'},})
     return response.json()
 }
