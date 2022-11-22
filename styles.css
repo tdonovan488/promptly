@@ -171,6 +171,7 @@ h1{
     border-style: solid;
     border-color: black;
     border-width: 5px;
+    box-shadow: 5px 5px 5px rgb(24, 24, 24);
 }
 .image-container{
     margin-top: 25px;
@@ -186,10 +187,12 @@ h1{
     margin-right: 10px;
     height: 126px;
     width: 56px;
+    border-color: black;
     background-color: #6B728E;
     border-width: 3px;
     border-style: solid;
     border-radius: 10px;
+    box-shadow: 5px 5px 5px rgb(24, 24, 24);
 }
 .prompt-container{
     display: grid;
