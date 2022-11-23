@@ -162,3 +162,5 @@ def test():
         time.sleep(1)
         
     prompts[tomorrow_string] = tomorrows_prompt_data
+
+#test()
