@@ -39,12 +39,12 @@ getPrompt().then((data) => {
         promptContainer.children[child].appendChild(newLetter)
         letterBoxes.push(newLetter)
     }
-    document.querySelector("body > div.image-container > img").src = images[0]
+    document.querySelector("body > div.image-container > img").src = images[0].filelocation
 })
 
 async function getPrompt(){
     
-    var url = "https://6809-2601-40c-c000-4690-9d9-1183-4914-4dd9.ngrok.io/api/todaysPrompt"
+    var url = "http://127.0.0.1:5000/api/todaysPrompt"
     const response = await fetch(url,{method:"GET",headers: {'Content-Type': 'application/json'},})
     return response.json()
 }
@@ -64,7 +64,7 @@ document.querySelector("body > div.image-container > button:nth-child(1)").addEv
         imageIndex = 2
     }
     document.querySelector("body > div.image-text").innerText = (imageIndex + 1) + "/3"
-    document.querySelector("body > div.image-container > img").src = images[imageIndex]
+    document.querySelector("body > div.image-container > img").src = images[imageIndex].filelocation
 })
 document.querySelector("body > div.image-container > button:nth-child(3)").addEventListener("click",function(){
     if(imageIndex < 2){
@@ -73,7 +73,7 @@ document.querySelector("body > div.image-container > button:nth-child(3)").addEv
         imageIndex = 0
     }
     document.querySelector("body > div.image-text").innerText = (imageIndex + 1) + "/3"
-    document.querySelector("body > div.image-container > img").src = images[imageIndex]
+    document.querySelector("body > div.image-container > img").src = images[imageIndex].filelocation
 })
 
 document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(1)").addEventListener("click",function(){

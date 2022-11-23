@@ -6,21 +6,40 @@ app = Flask(__name__)
 CORS(app)
 
 prompt_data = {
-        "prompt": "grand cycle",
-        "styles": [11],
-        "styleNames": ["Mystical"],
+        "prompt": "stark back",
+        "styles": [
+            7,
+            63,
+            41
+        ],
+        "styleNames": [
+            "HD",
+            "Spectral",
+            "Street Art"
+        ],
         "hints": [
-            "n",
+            "k",
+            "t",
+            "b",
             "c",
-            "y",
-            "l",
             "a",
-            "e",
-            "d",
-            "g",
+            "s",
             "r"
         ],
-        "links": ["images/hard-space11.jpg","images/hard-space63.jpg","images/hard-space49.jpg"]
+        "links": [
+            {
+                "link": "https://luan-wombo-paint.s3.amazonaws.com/generated/9169118b-17ff-401a-9d34-e969213d5424/final.jpg?AWSAccessKeyId=AKIAWGXQXQ6WCOB7PP5J&Signature=XH98kXDpSVaqtgh0bZRCP2AfJfI%3D&Expires=1669222857",
+                "filelocation": "images/stark-back-7.jpg"
+            },
+            {
+                "link": "https://luan-wombo-paint.s3.amazonaws.com/generated/9169118b-17ff-401a-9d34-e969213d5424/final.jpg?AWSAccessKeyId=AKIAWGXQXQ6WCOB7PP5J&Signature=XH98kXDpSVaqtgh0bZRCP2AfJfI%3D&Expires=1669222857",
+                "filelocation": "images/hard-space11.jpg"
+            },
+            {
+                "link": "https://luan-wombo-paint.s3.amazonaws.com/generated/9169118b-17ff-401a-9d34-e969213d5424/final.jpg?AWSAccessKeyId=AKIAWGXQXQ6WCOB7PP5J&Signature=XH98kXDpSVaqtgh0bZRCP2AfJfI%3D&Expires=1669222857",
+                "filelocation": "images/hard-space49.jpg"
+            }
+        ]
     }
 
 @app.route("/api/todaysPrompt")

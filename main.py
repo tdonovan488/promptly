@@ -9,43 +9,46 @@ app = Flask(__name__)
 CORS(app)
 
 API_KEY = "8lpCnBnuSIksGaBkVIQr78zQgLkchvOT"
+AUTHORIZATION = f'bearer {API_KEY}'
 
 with open("prompts.txt","r") as f:
     prompts = json.loads(f.read())
 
-todays_prompt_data = {}
+date = datetime.now()
+date_string = date.strftime("%d-%m-%Y")
+tomorrow_string = (date+timedelta(days=1)).strftime("%d-%m-%Y")
+todays_prompt_data = prompts[date_string]
+tomorrows_prompt_data = prompts[tomorrow_string]
 
-class generateImage(object):
-    def __init__(self,prompt,styles):
+class generateImage():
+    def __init__(self,prompt,style):
         self.prompt = prompt
-        self.style = styles
-        self.idToken = f'bearer {API_KEY}'
+        self.style = style
         self.taskId = ""
         self.state = ""
-        self.results = []
+        self.result = ""
+        self.filelocation = ""
+        self.successful = False
         self.headers = {
-            "Authorization": self.idToken,
+            "Authorization": AUTHORIZATION,
             "Content-Type": "application/json"
         }
 
-        for style in styles:
-            self.style = style
-            self.state = ""
-            print("Creating Task")
-            self.createTask()
-            print("Inputting Prompt")
-            self.inputPrompt()
-            while self.state != "completed" and self.state != "failed":
-                print("Checking Results")
-                self.checkResult()
-                time.sleep(3)
-            if(self.state == "failed"):
-                self.results = []
-                break
-        if(self.state != "failed"):
-            self.saveImages()
+        print("\n\n\n--------Getting Image--------")
+        print("Creating Task")
+        self.createTask()
+        print("Inputting Prompt")
+        self.inputPrompt()
+        while self.state != "completed":
+            self.checkResult()
+            time.sleep(3)
+            if(self.state == "failed") or self.state == "input":
+                return
+        self.saveImage()
+        self.successful = True
 
     def createTask(self):
+        print(self.headers)
         r = requests.post("https://api.luan.tools/api/tasks/",headers=self.headers,json={"use_target_image": False})
         print(r.text)
         j = json.loads(r.text)
@@ -60,25 +63,28 @@ class generateImage(object):
             "width":500,
             "height":500
         }}
+        print(put_payload)
         r = requests.request("PUT", f"https://api.luan.tools/api/tasks/{self.taskId}", headers=self.headers, data=json.dumps(put_payload))
         j = json.loads(r.text)
         print(r.text)
-        self.state = j.get("state")
+        if j.get("state"):
+            self.state = j.get("state")
 
 
     def checkResult(self):
         r = requests.get(f"https://api.luan.tools/api/tasks/{self.taskId}",headers=self.headers)
         j = json.loads(r.text)
         self.state = j.get("state")
-        self.results.append(j.get("result"))
+        if j.get("state") == "completed":
+            self.result = j.get("result")
         print(r.text)
 
-    def saveImages(self):
+    def saveImage(self):
         filename = self.prompt.replace(" ","-")
-        for i in self.results:
-            r = requests.get("i")
-            with open(f"images/{filename}.jpg","wb") as f:
-                f.write(r.content)
+        r = requests.get(self.result)
+        with open(f"images/{filename}-{self.style}.jpg","wb") as f:
+            f.write(r.content)
+        self.filelocation = f"images/{filename}-{self.style}.jpg"
 
 def main_loop():
     print("Loop Started")
@@ -87,47 +93,72 @@ def main_loop():
     tomorrow_string = (date+timedelta(days=1)).strftime("%d-%m-%Y")
 
     global todays_prompt_data
+    global tomorrows_prompt_data
     todays_prompt_data = prompts[date_string]
+    tomorrows_prompt_data = prompts[tomorrow_string]
 
     prompt = todays_prompt_data["prompt"]
     styles = todays_prompt_data["styles"]
+    for i in range(len(todays_prompt_data["links"]),3):
+        imageGenerator = generateImage(prompt=prompt,style=styles[i])
+        if imageGenerator.successful:
+            todays_prompt_data["links"].append({"link":imageGenerator.result,"filelocation":imageGenerator.filelocation})
+        time.sleep(1)
+    prompts[date_string] = todays_prompt_data
 
-    if(len(todays_prompt_data["links"]) == 0):
-        imageGenerator = generateImage(prompt=prompt,styles=styles)
-        todays_prompt_data["links"] = imageGenerator.result
-        print(todays_prompt_data)
-        prompts[date_string] = todays_prompt_data
-        time.sleep(30)
-
-    # if(len(prompts[tomorrow_string]["links"]) == 0):
-    #     imageGenerator = generateImage(prompt=prompts[tomorrow_string]["prompt"],styles=prompts[tomorrow_string]["styles"])
-    #     prompts[tomorrow_string]["links"] = imageGenerator.result
-    #     time.sleep(30)
+    prompt = tomorrows_prompt_data["prompt"]
+    styles = tomorrows_prompt_data["styles"]
+    for i in range(len(tomorrows_prompt_data["links"]),3):
+        imageGenerator = generateImage(prompt=prompt,style=styles[i])
+        if imageGenerator.successful:
+            tomorrows_prompt_data["links"].append({"link":imageGenerator.result,"filelocation":imageGenerator.filelocation})
+        time.sleep(1)
+    prompts[tomorrow_string] = tomorrows_prompt_data
 
     with open("prompts.txt","w") as f:
         f.write(json.dumps(prompts,indent=4))
 
     time.sleep(60)
 
-# loop = Thread(target=lambda: main_loop(),args=())
-# loop.start()
+def savePromptData():
+    with open("prompts.txt","w") as f:
+        f.write(json.dumps(prompts,indent=4))
+
+
 
 @app.route("/api/todaysPrompt")
 def getTodaysPrompt():
     return json.dumps(todays_prompt_data,indent=4)
 
-# app.run()
 
-date = datetime.now()
-date_string = date.strftime("%d-%m-%Y")
-todays_prompt_data = prompts[date_string]
-prompt = todays_prompt_data["prompt"]
-styles = todays_prompt_data["styles"]
-if(len(todays_prompt_data["links"]) == 0):
-    imageGenerator = generateImage(prompt=prompt,styles=styles)
-    todays_prompt_data["links"] = imageGenerator.result
-    print(todays_prompt_data)
+# loop = Thread(target=lambda: main_loop(),args=())
+# loop.start()
+app.run()
+
+def test():
+    date = datetime.now()
+    date_string = date.strftime("%d-%m-%Y")
+    tomorrow_string = (date+timedelta(days=1)).strftime("%d-%m-%Y")
+    global todays_prompt_data
+    global tomorrows_prompt_data
+    todays_prompt_data = prompts[date_string]
+    tomorrows_prompt_data = prompts[tomorrow_string]
+    prompt = todays_prompt_data["prompt"]
+    styles = todays_prompt_data["styles"]
+    for i in range(len(todays_prompt_data["links"]),3):
+        imageGenerator = generateImage(prompt=prompt,style=styles[i])
+        if imageGenerator.successful:
+            todays_prompt_data["links"].append({"link":imageGenerator.result,"filelocation":imageGenerator.filelocation})
+            savePromptData()
+        time.sleep(1)
     prompts[date_string] = todays_prompt_data
-
-with open("prompts.txt","w") as f:
-    f.write(json.dumps(prompts,indent=4))
+    prompt = tomorrows_prompt_data["prompt"]
+    styles = tomorrows_prompt_data["styles"]
+    for i in range(len(tomorrows_prompt_data["links"]),3):
+        imageGenerator = generateImage(prompt=prompt,style=styles[i])
+        if imageGenerator.successful:
+            tomorrows_prompt_data["links"].append({"link":imageGenerator.result,"filelocation":imageGenerator.filelocation})
+            savePromptData()
+        time.sleep(1)
+        
+    prompts[tomorrow_string] = tomorrows_prompt_data

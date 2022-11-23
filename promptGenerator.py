@@ -1,52 +1,22 @@
 from datetime import datetime,timedelta
-import random,json
+import random,json, requests
 
 daysToGenerate = 1095
 
-styles = ["Spectral","Bad Trip","Cartoonist","HDR","Realistic","Meme","Isometric","Retro-Futurism","Analogue","Paint","Polygon","Gouache","Comic","Line-Art","Malevolent","Surreal","Throwback","Street Art","No Style","Ghibli","Melancholic","Pandora","Daydream","Provenance","Arcane","Toasty","Transitory","Psychic","Rose Gold","Wuhtercuhler","Etching","Mystical","Dark Fantasy","HD","Vibrant","Fantasy Art","Steampunk","Psychedelic","Ukiyoe","Synthwave"]
-
-styleDecoder = {
-    "Spectral": 63,
-    "Bad Trip": 57,
-    "Cartoonist": 58,
-    "HDR": 52,
-    "Realistic": 32,
-    "Meme": 44,
-    "Isometric": 55,
-    "Retro-Futurism": 54,
-    "Analogue": 53,
-    "Paint": 50,
-    "Polygon": 49,
-    "Gouache": 48,
-    "Comic": 45,
-    "Line-Art": 47,
-    "Malevolent": 40,
-    "Surreal": 37,
-    "Throwback": 35,
-    "Street Art": 41,
-    "No Style": 3,
-    "Ghibli": 22,
-    "Melancholic": 28,
-    "Pandora": 39,
-    "Daydream": 36,
-    "Provenance": 17,
-    "Arcane": 34,
-    "Toasty": 31,
-    "Transitory": 29,
-    "Psychic": 9,
-    "Rose Gold": 18,
-    "Wuhtercuhler": 16,
-    "Etching": 14,
-    "Mystical": 11,
-    "Dark Fantasy": 10,
-    "HD": 7,
-    "Vibrant": 6,
-    "Fantasy Art": 5,
-    "Steampunk": 4,
-    "Psychedelic": 21,
-    "Ukiyoe": 2,
-    "Synthwave": 1
+API_KEY = "8lpCnBnuSIksGaBkVIQr78zQgLkchvOT"
+AUTHORIZATION = f'bearer {API_KEY}'
+headers = {
+            "Authorization": AUTHORIZATION,
+            "Content-Type": "application/json"
 }
+styleDecoder = {}
+styles = []
+r = requests.get("https://api.luan.tools/api/styles/",headers=headers)
+j = json.loads(r.text)
+
+for i in j:
+    styles.append(i["name"])
+    styleDecoder[i["name"]] = i["id"]
 
 prompts = {}
 
@@ -72,6 +42,8 @@ for i in range(daysToGenerate):
     styleCodes = []
     for i in range(3):
         styleName = random.choice(styles)
+        while styleName in styleNames:
+            styleName = random.choice(styles)
         styleNames.append(styleName)
         styleCodes.append(styleDecoder[styleName])
 
