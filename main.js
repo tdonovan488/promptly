@@ -18,8 +18,9 @@ var letterBoxes = []
 
 var exitButtons = document.getElementsByClassName("exit-button")
 var overlayContainer = document.querySelector("body > div.menus.menu-hidden")
-var howToPopup = document.querySelector("body > div.menus.menu-hidden > div")
-
+var howToPopup = document.querySelector("body > div.menus.menu-hidden > div.how-to-play.popup.menu-hidden")
+var settingsPopup = document.querySelector("body > div.menus.menu-hidden > div.settings.popup.menu-hidden")
+var creditsPopup = document.querySelector("body > div.menus.menu-hidden > div.credits.popup.menu-hidden")
 
 getPrompt().then((data) => {
     console.log(data)
@@ -43,7 +44,6 @@ getPrompt().then((data) => {
 })
 
 async function getPrompt(){
-    
     var url = "http://127.0.0.1:5000/api/todaysPrompt"
     const response = await fetch(url,{method:"GET",headers: {'Content-Type': 'application/json'},})
     return response.json()
@@ -51,6 +51,8 @@ async function getPrompt(){
 
 function closePopup(){
     howToPopup.className = "how-to-play popup menu-hidden"
+    settingsPopup.className = "settings popup menu-hidden"
+    creditsPopup.className = "credits popup menu-hidden"
     overlayContainer.className = "menus menu-hidden"
 }
 for(var i = 0;i < exitButtons.length;i++){
@@ -77,18 +79,23 @@ document.querySelector("body > div.image-container > button:nth-child(3)").addEv
 })
 
 document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(1)").addEventListener("click",function(){
+    closePopup()
     howToPopup.className = "how-to-play popup"
     overlayContainer.className = "menus"
 })
 
 
 document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(2)").addEventListener("click",function(){
-    
+    closePopup()
+    settingsPopup.className = "settings popup"
+    overlayContainer.className = "menus"
 })
 
 
 document.querySelector("body > header > div.dropdown-container > div > div > button:nth-child(3)").addEventListener("click",function(){
-    
+    closePopup()
+    creditsPopup.className = "credits popup"
+    overlayContainer.className = "menus"
 })
 
 

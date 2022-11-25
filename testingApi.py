@@ -29,15 +29,15 @@ prompt_data = {
         "links": [
             {
                 "link": "https://luan-wombo-paint.s3.amazonaws.com/generated/9169118b-17ff-401a-9d34-e969213d5424/final.jpg?AWSAccessKeyId=AKIAWGXQXQ6WCOB7PP5J&Signature=XH98kXDpSVaqtgh0bZRCP2AfJfI%3D&Expires=1669222857",
-                "filelocation": "images/stark-back-7.jpg"
+                "filelocation": "images/giant-bike-8.jpg"
             },
             {
                 "link": "https://luan-wombo-paint.s3.amazonaws.com/generated/9169118b-17ff-401a-9d34-e969213d5424/final.jpg?AWSAccessKeyId=AKIAWGXQXQ6WCOB7PP5J&Signature=XH98kXDpSVaqtgh0bZRCP2AfJfI%3D&Expires=1669222857",
-                "filelocation": "images/hard-space11.jpg"
+                "filelocation": "images/giant-bike-11.jpg"
             },
             {
                 "link": "https://luan-wombo-paint.s3.amazonaws.com/generated/9169118b-17ff-401a-9d34-e969213d5424/final.jpg?AWSAccessKeyId=AKIAWGXQXQ6WCOB7PP5J&Signature=XH98kXDpSVaqtgh0bZRCP2AfJfI%3D&Expires=1669222857",
-                "filelocation": "images/hard-space49.jpg"
+                "filelocation": "images/giant-bike-13.jpg"
             }
         ]
     }
