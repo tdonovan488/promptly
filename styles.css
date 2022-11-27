@@ -96,6 +96,14 @@ h1{
     border-width: 3px;
     border-style: solid;
 }
+.credits-grid{
+    display: grid;
+    justify-content: center;
+}
+.credit-text{
+    color: #F2E7D5;
+}
+
 .letterbox-instructions{
     display: grid;
     justify-items: center;
@@ -263,7 +271,7 @@ h1{
     width: 300px;
     height: 450px;
 }
-[class*="how-to-title"]{
+[class*="pop-title"]{
     font-size: 12px;
 }
 [class*="example-box"]{
@@ -277,7 +285,18 @@ h1{
 [class*="how-to-grid"]{
     row-gap: 5px;
 }
-
+@media only screen and (min-height:1000px) and (min-width:600px){
+    .prompt-image{
+        height: 500px;
+        width: auto;
+    }
+}
+@media only screen and (min-height:700px) and (min-width:600px){
+    .prompt-image{
+        height: 425px;
+        width: auto;
+    }
+}
 @media only screen and (min-width:600px){
     /* Desktop */
     .letter-box{
@@ -285,10 +304,6 @@ h1{
         font-size: 26px;
         width: 75px;
         height: 75px;
-    }
-    .prompt-image{
-        height: 500px;
-        width: auto;
     }
     .example-image{
         height: 300px;
@@ -304,7 +319,7 @@ h1{
         width: 600px;
         height: 750px;
     }
-    .how-to-title{
+    .pop-title{
         font-size: 24px;
     }
     .example-box{
