@@ -22,6 +22,60 @@ var howToPopup = document.querySelector("body > div.menus.menu-hidden > div.how-
 var settingsPopup = document.querySelector("body > div.menus.menu-hidden > div.settings.popup.menu-hidden")
 var creditsPopup = document.querySelector("body > div.menus.menu-hidden > div.credits.popup.menu-hidden")
 
+var keyboard = [["qwertyuiop"],["asdfghjkl"],["zxcvbnm"]]
+var keyElements = []
+var keyboardElement = document.querySelector("body > div.keyboard-container")
+
+var key = document.createElement("button")
+key.className = "keyboard-control-key"
+key.value = "enter"
+key.innerText = "Enter"
+keyboardElement.children[2].appendChild(key)
+keyElements.push(key)
+for(var i = 0;i < keyboard.length;i++){
+    for(var x = 0;x<keyboard[i][0].length;x++){
+        var key = document.createElement("button")
+        key.className = "keyboard-key"
+        key.value = keyboard[i][0][x]
+        key.innerText = keyboard[i][0][x].toUpperCase()
+        keyboardElement.children[i].appendChild(key)
+        keyElements.push(key)
+    }
+}
+key = document.createElement("button")
+key.className = "keyboard-control-key"
+key.value = "back"
+key.innerText = "Delete"
+keyboardElement.children[2].appendChild(key)
+keyElements.push(key)
+
+keyElements.forEach(element => {
+    element.addEventListener("click",function(){keyPress(element.value)})
+});
+
+function keyPress(key){
+    if(key === "back"){
+        guessIndex = findDeleteIndex()
+        guess = guess.slice(0,guessIndex)
+    } else if (key == "enter"){
+        if(guess.length != n + 1 || guess.includes(undefined)) return;
+        checkGuess()
+    }else{
+        guessIndex = findOpenIndex()
+        guess[guessIndex] = key
+    }
+    selectedSpace = findOpenIndex()
+    guess = guess.slice(0,n+1)
+    for(var i = 0;i < correctLetters.Positions.length;i++){
+        guess[correctLetters.Positions[i]] = compare_string[correctLetters.Positions[i]]
+    }
+    for(var i = 0;i < shownHints.Positions.length;i++){
+        guess[shownHints.Positions[i]] = compare_string[shownHints.Positions[i]]
+    }
+
+    updateBoard();
+}
+
 getPrompt().then((data) => {
     console.log(data)
     prompt = data.prompt

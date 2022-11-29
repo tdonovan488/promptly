@@ -259,7 +259,27 @@ h1{
     height: fit-content;
     padding-bottom: 15px;
 }
-
+.keyboard-container{
+    width: 100%;
+    padding-top: 20px;
+}
+.keyboard-row{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.keyboard-key{
+    width: 35px;
+    height: 40px;
+    display: inline-block;
+    outline: none;
+}
+.keyboard-control-key{
+    width: fit-content;
+    height: 40px;
+    display: inline-block;
+    outline: none;
+}
 /* Mobile */
 [class*="letter-box"]{
     margin-left: 10px;
@@ -295,6 +315,9 @@ h1{
 }
 [class*="how-to-grid"]{
     row-gap: 5px;
+}
+[class*="keyboard-container"]{
+    display: block;
 }
 @media only screen and (min-height:1000px) and (min-width:600px){
     .prompt-image{
@@ -350,6 +373,9 @@ h1{
     }
     .how-to-grid{
         row-gap: 10px;
+    }
+    .keyboard-container{
+        display: hidden;
     }
 }
 .correct{
