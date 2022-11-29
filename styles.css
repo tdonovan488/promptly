@@ -280,6 +280,10 @@ h1{
     display: inline-block;
     outline: none;
 }
+.disable-zoom {
+    touch-action: manipulation;
+}
+
 /* Mobile */
 [class*="letter-box"]{
     margin-left: 10px;

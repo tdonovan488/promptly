@@ -27,7 +27,7 @@ var keyElements = []
 var keyboardElement = document.querySelector("body > div.keyboard-container")
 
 var key = document.createElement("button")
-key.className = "keyboard-control-key"
+key.className = "keyboard-control-key disable-zoom"
 key.value = "enter"
 key.innerText = "Enter"
 keyboardElement.children[2].appendChild(key)
@@ -35,7 +35,7 @@ keyElements.push(key)
 for(var i = 0;i < keyboard.length;i++){
     for(var x = 0;x<keyboard[i][0].length;x++){
         var key = document.createElement("button")
-        key.className = "keyboard-key"
+        key.className = "keyboard-key disable-zoom"
         key.value = keyboard[i][0][x]
         key.innerText = keyboard[i][0][x].toUpperCase()
         keyboardElement.children[i].appendChild(key)
@@ -43,7 +43,7 @@ for(var i = 0;i < keyboard.length;i++){
     }
 }
 key = document.createElement("button")
-key.className = "keyboard-control-key"
+key.className = "keyboard-control-key disable-zoom"
 key.value = "back"
 key.innerText = "Delete"
 keyboardElement.children[2].appendChild(key)
