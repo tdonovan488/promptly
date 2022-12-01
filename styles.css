@@ -285,7 +285,8 @@ h1{
     margin-left: 3px;
     border-radius: 3px;
     border: solid;
-    font-size: 10px;
+    font-size: 8px;
+    border-width: 2px;
     border-color: black;
     background-color: #6B728E;
     color: #F2E7D5;
@@ -318,6 +319,7 @@ h1{
 [class*="prompt-image"]{
     height: 250px;
     width: auto;
+    border-width: 2px;
 }
 [class*="example-image"]{
     height: 150px;
