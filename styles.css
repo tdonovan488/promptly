@@ -261,6 +261,7 @@ h1{
     box-shadow: 5px 5px 5px rgb(24, 24, 24);
     height: fit-content;
     padding-bottom: 15px;
+    z-index: 100;
 }
 .keyboard-container{
     width: 100%;
@@ -347,10 +348,15 @@ h1{
 [class*="how-to-grid"]{
     row-gap: 5px;
 }
+[class*="exit-image"]{
+    width: 24px;
+    height: auto;
+}
 @media only screen and (min-height:1000px) and (min-width:600px){
     .prompt-image{
         height: 500px;
         width: auto;
+        border-width: 4px;
     }
     .body-text{
         font-size: 16px;
@@ -364,6 +370,7 @@ h1{
     .prompt-image{
         height: 425px;
         width: auto;
+        border-width: 4px;
     }
     .body-text{
         font-size: 15px;
@@ -380,6 +387,7 @@ h1{
         font-size: 26px;
         width: 75px;
         height: 75px;
+        border-width: 4px;
     }
     .example-image{
         height: 300px;
@@ -404,6 +412,10 @@ h1{
     }
     .keyboard-container{
         display: none;
+    }
+    .exit-image{
+        width: 32px;
+        height: auto;
     }
 }
 .correct{
